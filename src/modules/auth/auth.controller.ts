@@ -43,6 +43,7 @@ export const loginController = async (req: Request, res: Response) => {
   try {
 
     const loginResult = await authService.login(valResult.data);
+    console.log("RES", loginResult)
     res.status(200).json(loginResult);
 
   } catch (err) {

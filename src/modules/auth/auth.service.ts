@@ -51,8 +51,6 @@ export const register = async (dto: RegisterDto): Promise<AuthResponse> => {
     );
   }
 
-  console.log(orgData);
-
   return {
     token: authData.session.access_token,
     organization: {
@@ -81,7 +79,6 @@ export const login = async (dto: LoginDto): Promise<AuthResponse> => {
     );
 
   }
-  console.log(signInData.user!.id)
   const {data:orgMemberData, error: orgMemberError} = await supabaseServiceRole.from('organization_members').select(`id, org_id , organizations(name, admin_name )`).eq('user_id', signInData.user!.id).single() as any;
 
   if(orgMemberError){
@@ -90,7 +87,7 @@ export const login = async (dto: LoginDto): Promise<AuthResponse> => {
       `Error al intentar obtener info de organizacion: ${orgMemberError.message}, ${orgMemberError.name}`, 500
     );
   }
-
+  
   return {
     token: signInData.session.access_token,
     organization: {
