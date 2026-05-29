@@ -2,7 +2,6 @@ import { z as zod } from 'zod';
 
 
 
-
 export const registerSchema = zod.object({
   email: zod.email(),
   password: zod.string().regex(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d\W_]{8,32}$/),

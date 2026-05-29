@@ -1,26 +1,21 @@
 export interface Client {
 
   id:string,
-  orgId:string,
-  fullName:string,
+  org_id:string,
+  fullname:string,
   phone:string,
   email:string,
   birthdate:string
 
-}
-
-export interface UpdateClientDto {
-  fullName:string,
-  phone:string,
-  email:string,
-  birthdate:string
 }
 
 export interface CreateClientDto {
   
-  fullName:string,
+  fullname:string,
   phone:string,
   email:string,
   birthdate:string
-
+  
 }
+
+export type UpdateClientDto = Partial<CreateClientDto>;
