@@ -9,7 +9,7 @@ export interface Client {
 
 }
 
-export interface CreateClientDto {
+export interface createDto {
   
   fullname:string,
   phone:string,
@@ -18,4 +18,4 @@ export interface CreateClientDto {
   
 }
 
-export type UpdateClientDto = Partial<CreateClientDto>;
+export type UpdateClientDto = Partial<createDto>;

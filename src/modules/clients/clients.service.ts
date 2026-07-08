@@ -1,11 +1,9 @@
-import {Client, CreateClientDto , UpdateClientDto}  from './clients.types'
+import {Client, createDto , UpdateClientDto}  from './clients.types'
 import { supabaseServiceRole, supabase } from "../../config/supabase";
 
-export const getAllClients =  async (orgId:string):Promise<Array<Client>> => {
+const getAll =  async (orgId:string):Promise<Array<Client>> => {
     
-  
-  console.log("orgID:",orgId);
-  
+    
   const {data:clients, error} = await supabaseServiceRole.from('clients').select('*').eq('org_id', orgId);
   
   if(error){
@@ -22,7 +20,7 @@ export const getAllClients =  async (orgId:string):Promise<Array<Client>> => {
 }
 
 
-export const getClientById = async (orgId:string, userId:string): Promise<Client | null> => {
+const getOneById = async (orgId:string, userId:string): Promise<Client | null> => {
 
   const {data:client, error } = await supabaseServiceRole.from('clients').select().eq('org_id', orgId).eq('id', userId).single();
   
@@ -45,7 +43,7 @@ export const getClientById = async (orgId:string, userId:string): Promise<Client
 }
 
 
-export const createClient = async (orgId:string, dto:CreateClientDto): Promise<Client> => {
+const create = async (orgId:string, dto:createDto): Promise<Client> => {
 
   const newClient = {
     ...dto,
@@ -63,7 +61,7 @@ export const createClient = async (orgId:string, dto:CreateClientDto): Promise<C
 
 }
 
-export const deleteClientById = async (orgId:string, userId:string): Promise<boolean> => {
+const deleteById = async (orgId:string, userId:string): Promise<boolean> => {
 
   const {error} = await supabaseServiceRole.from('clients').delete().eq('org_id',orgId).eq('id',userId).select('id').single();
   
@@ -71,18 +69,18 @@ export const deleteClientById = async (orgId:string, userId:string): Promise<boo
     if(error.code === 'PGRST116'){ //doesnt find match
       return false;
     }else {
-      throw new Error (`Error trying to get one client :  ${error.message} code: '${error.code}'`);
+      throw new Error (`Error trying to get one client for deletion :  ${error.message} code: '${error.code}'`);
     }
   }
 
   return true;
 }
 
-export const updateClientById = async (orgId:string, userId:string, dto:UpdateClientDto): Promise<Client|null> => {
+const updateById = async (orgId:string, userId:string, dto:UpdateClientDto): Promise<Client|null> => {
 
   const {data, error} = await supabaseServiceRole.from('clients').update(dto).eq('org_id', orgId).eq('id',userId).select().single();
 
- if (error){
+  if (error){
     console.log(error);
     if(error.code === 'PGRST116'){ //doesnt find match or field names doesnt match
       return null;
@@ -91,5 +89,10 @@ export const updateClientById = async (orgId:string, userId:string, dto:UpdateCl
     }
   }
 
-  return data as Client;;
+  return data as Client;
+}
+
+
+export default {
+  getAll, getOneById, create, updateById, deleteById
 }

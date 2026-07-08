@@ -1,13 +1,13 @@
 import { Router } from 'express'
-import * as clientController from './clients.controller'
+import clientController from './clients.controller'
 
 
 const router = Router();
 
-router.get("/",clientController.getAllClientsController);
-router.get("/:id",clientController.getClientByIdController);
-router.post("/", clientController.createClientController);
-router.delete("/:id",clientController.deleteClientByIdController);
-router.patch("/:id",clientController.updateClientByIdController);
+router.get("/",clientController.getAll);
+router.get("/:id",clientController.getOneById);
+router.post("/", clientController.create);
+router.delete("/:id",clientController.deleteById);
+router.patch("/:id",clientController.updateById);
 
 export default router;

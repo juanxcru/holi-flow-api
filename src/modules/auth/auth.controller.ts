@@ -3,7 +3,7 @@ import * as zod from "./auth.schemas";
 import AuthException from "./auth.exceptions";
 import { Request, Response } from "express";
 
-export const registerController = async (req: Request, res: Response) => {
+export const register = async (req: Request, res: Response) => {
   const valResult = zod.registerSchema.safeParse(req.body);
 
   if (!valResult.success){
@@ -32,7 +32,7 @@ export const registerController = async (req: Request, res: Response) => {
   return;
 };
 
-export const loginController = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response) => {
   const valResult = zod.loginSchema.safeParse(req.body);
 
   if (!valResult.success) {
