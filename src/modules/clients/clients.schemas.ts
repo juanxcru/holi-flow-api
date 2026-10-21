@@ -2,7 +2,7 @@ import z from 'zod';
 
 
 export const clientSchema = z.object({
-  fullname: z.string() ,
+  full_name: z.string() ,
   phone: z.string(),
   email: z.email(),
   birthdate: z.iso.date()

@@ -1,8 +1,13 @@
 import AuthException from "./auth.exceptions";
 import { supabaseServiceRole, supabase } from "../../config/supabase";
-import { RegisterDto, LoginDto, AuthResponse } from "./auth.types";
+import { RegisterOrgDto, LoginDto, AuthResponse } from "./auth.types";
 
-export const register = async (dto: RegisterDto): Promise<AuthResponse> => {
+
+/* 
+*** Register new organization+owner ***
+ToDo: refactor for next version. Only for mvp.
+*/
+export const register = async (dto: RegisterOrgDto): Promise<AuthResponse> => {
   const { data: authData, error: authError } = await supabase.auth.signUp({
     email: dto.email,
     password: dto.password,
@@ -19,7 +24,6 @@ export const register = async (dto: RegisterDto): Promise<AuthResponse> => {
       name: dto.organizationName,
       country: dto.country,
       timezone: dto.timezone,
-      admin_name: dto.adminName,
       admin_email: dto.email,
     })
     .select()
@@ -38,7 +42,7 @@ export const register = async (dto: RegisterDto): Promise<AuthResponse> => {
     .insert({
       org_id: orgData.id,
       user_id: authData.user!.id,
-      role: "owner",
+      role: ["owner"]
     })
     .select()
     .single();
@@ -87,6 +91,11 @@ export const login = async (dto: LoginDto): Promise<AuthResponse> => {
       `Error al intentar obtener info de organizacion: ${orgMemberError.message}, ${orgMemberError.name}`, 500
     );
   }
+
+  if(!orgMemberData){
+    throw new AuthException('El usuario no pertenece a ninguna organizacion', 403);
+  }
+
   
   return {
     token: signInData.session.access_token,
@@ -98,6 +107,7 @@ export const login = async (dto: LoginDto): Promise<AuthResponse> => {
       id: signInData.user!.id,
       email: signInData.user!.email!,
       name: orgMemberData!.organizations.admin_name,
+      //name: profile?.full_name ?? signInData.user!.email!
     },
   };
 

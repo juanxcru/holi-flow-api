@@ -4,6 +4,7 @@ import authRouter from './modules/auth/auth.router'
 import clientsRouter from './modules/clients/clients.router'
 import professionalRouter from './modules/professionals/professionals.router'
 import authMiddleware from './middlewares/auth.middleware';
+import { errorHandler, notFoundHandler } from './middlewares/error.middleware';
 
 dotenv.config();
 
@@ -15,6 +16,8 @@ app.use('/api/auth', authRouter);
 app.use('/api/clients', authMiddleware, clientsRouter)
 app.use('/api/professionals',authMiddleware, professionalRouter)
 
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 
 const PORT = process.env.PORT || 3000;

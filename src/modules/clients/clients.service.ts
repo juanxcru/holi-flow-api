@@ -1,10 +1,11 @@
 import {Client, createDto , UpdateClientDto}  from './clients.types'
-import { supabaseServiceRole, supabase } from "../../config/supabase";
+import { supabaseServiceRole, supabaseCreateClient } from "../../config/supabase";
 
-const getAll =  async (orgId:string):Promise<Array<Client>> => {
+const getAll =  async (token:string):Promise<Array<Client>> => {
     
-    
-  const {data:clients, error} = await supabaseServiceRole.from('clients').select('*').eq('org_id', orgId);
+  const supClient = supabaseCreateClient(token);
+  
+  const { data: clients, error } = await supClient.from('clients').select('*');
   
   if(error){
     console.log(error);
@@ -20,9 +21,11 @@ const getAll =  async (orgId:string):Promise<Array<Client>> => {
 }
 
 
-const getOneById = async (orgId:string, userId:string): Promise<Client | null> => {
-
-  const {data:client, error } = await supabaseServiceRole.from('clients').select().eq('org_id', orgId).eq('id', userId).single();
+const getOneById = async (userId:string, token:string): Promise<Client | null> => {
+  
+  const supClient = supabaseCreateClient(token);
+  
+  const {data:client, error } = await supClient.from('clients').select().eq('id', userId).single();
   
   if (error){
     if(error.code === 'PGRST116'){ //doesnt find match
@@ -43,14 +46,14 @@ const getOneById = async (orgId:string, userId:string): Promise<Client | null> =
 }
 
 
-const create = async (orgId:string, dto:createDto): Promise<Client> => {
+const create = async (token:string, dto:createDto): Promise<Client> => {
 
   const newClient = {
-    ...dto,
-    org_id: orgId
+    ...dto
   }
-  
-  const {data, error} = await supabaseServiceRole.from('clients').insert(newClient).select().single();
+  const supClient = supabaseCreateClient(token);
+
+  const {data, error} = await supClient.from('clients').insert(newClient).select().single();
 
   if (error || !data){
     throw new Error(`Error trying to create client: ${error?.message || "can't retrieve new client"}`);
@@ -61,9 +64,11 @@ const create = async (orgId:string, dto:createDto): Promise<Client> => {
 
 }
 
-const deleteById = async (orgId:string, userId:string): Promise<boolean> => {
+const deleteById = async (token:string, userId:string): Promise<boolean> => {
 
-  const {error} = await supabaseServiceRole.from('clients').delete().eq('org_id',orgId).eq('id',userId).select('id').single();
+  const supClient = supabaseCreateClient(token);
+
+  const {error} = await supClient.from('clients').delete().eq('id',userId).select('id').single();
   
   if (error){
     if(error.code === 'PGRST116'){ //doesnt find match

@@ -3,7 +3,7 @@ export interface Professional {
   org_id: string,
   name: string, 
   email: string,
-  phonenumber: string,
+  phone: string,
   role: string
   active: boolean
   commision_override?: number
@@ -15,7 +15,7 @@ export interface createDto {
   name: string, 
   role: string,
   email: string,
-  phonenumber: string,
+  phone: string,
   active: boolean
   commision_override?: number
 

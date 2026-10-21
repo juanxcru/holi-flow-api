@@ -1,12 +1,11 @@
-export interface RegisterDto {
+export interface RegisterOrgDto {
   email:string,
   password:string,
   organizationName: string,
   country:string,
   timezone:string,
-  defaultProfessionalFee:number,
   adminName:string,
-  adminPhone:string
+  adminPhone?:string
 }
 
 export interface LoginDto {

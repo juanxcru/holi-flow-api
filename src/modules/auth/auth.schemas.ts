@@ -8,9 +8,8 @@ export const registerSchema = zod.object({
   organizationName: zod.string(),
   country: zod.string().default('ARG'), // toDo: ISO 3166 (3 chars) validation
   timezone: zod.string().default('GMT-3'),
-  defaultProfessionalFee: zod.number().min(0).max(1).default(0),
   adminName: zod.string().min(3).max(32),
-  adminPhone: zod.e164().default("none")
+  adminPhone: zod.e164().optional()
 })
 
 export const loginSchema = zod.object({

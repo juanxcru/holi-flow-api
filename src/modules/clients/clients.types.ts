@@ -2,7 +2,7 @@ export interface Client {
 
   id:string,
   org_id:string,
-  fullname:string,
+  full_name:string,
   phone:string,
   email:string,
   birthdate:string
@@ -11,7 +11,7 @@ export interface Client {
 
 export interface createDto {
   
-  fullname:string,
+  full_name:string,
   phone:string,
   email:string,
   birthdate:string

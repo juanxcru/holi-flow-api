@@ -59,7 +59,7 @@ import { supabaseServiceRole} from "../../config/supabase";
 
  const deleteById = async (orgId:string, profId:string): Promise<boolean> => {
   
-  const {error} = await supabaseServiceRole.from('professional').delete().eq('org_id',orgId).eq('id',profId).select('id').single();
+  const {error} = await supabaseServiceRole.from('professionals').delete().eq('org_id',orgId).eq('id',profId).select('id').single();
   
   if (error){
     if(error.code === 'PGRST116'){ //doesnt find match

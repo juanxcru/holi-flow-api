@@ -6,6 +6,8 @@ declare global {
       user?: {
         id: string
         orgId: string
+        roles: string[]
+        accessToken: string
       }
     }
   }
